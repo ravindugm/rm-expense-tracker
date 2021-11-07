@@ -16,3 +16,18 @@ REST project for tracking expenses
    - Admin password: `admin`
    - Port: `5432`
    - Docker image name: `postgres`
+
+2. Copy database script file to the running container
+   ```
+   docker cp rmexpensetracker_db.sql postgresdb:/
+   ```
+   
+3. Login to the container
+   ```
+   docker container exec -it postgresdb bash
+   ```
+
+4. Run `SQL` inside the container
+   ```
+   psql -U postgres --file rmexpensetracker_db.sql
+   ```
