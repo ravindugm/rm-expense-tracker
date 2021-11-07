@@ -31,3 +31,13 @@ REST project for tracking expenses
    ```
    psql -U postgres --file rmexpensetracker_db.sql
    ```
+   
+5. Login to running `Postgres` container
+   ```
+   docker container exec -it postgresdb psql -U postgres
+   ```
+
+6. Connect to the database inside the container
+   ```
+   \connect expensetrackerdb;
+   ```
