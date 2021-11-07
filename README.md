@@ -27,7 +27,7 @@ REST project for tracking expenses
    docker container exec -it postgresdb bash
    ```
 
-4. Run `SQL` inside the container
+4. Run `SQL` script inside the container
    ```
    psql -U postgres --file rmexpensetracker_db.sql
    ```
