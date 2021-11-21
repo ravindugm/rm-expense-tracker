@@ -3,6 +3,7 @@ package com.rmdev.rmexpensetracker.repository;
 import com.rmdev.rmexpensetracker.entity.User;
 import com.rmdev.rmexpensetracker.exception.RmAuthException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -48,7 +49,14 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public User findByEmailAndPassword(String email, String password) throws RmAuthException {
-        return null;
+        try {
+            User user = jdbcTemplate.queryForObject(SQL_FIND_BY_EMAIL, new Object[]{email}, userRowMapper);
+            if (!password.equals(user.getPassword()))
+                throw new RmAuthException("Invalid Password");
+            return user;
+        } catch (EmptyResultDataAccessException e) {
+            throw new RmAuthException("Invalid Email");
+        }
     }
 
     @Override
