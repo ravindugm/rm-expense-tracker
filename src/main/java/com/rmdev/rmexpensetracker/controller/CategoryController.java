@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,7 +27,8 @@ public class CategoryController {
     }
 
     @PostMapping("")
-    public ResponseEntity<Category> addCategory(HttpServletRequest request, @RequestBody Map<String, Object> categoryMap) {
+    public ResponseEntity<Category> addCategory(HttpServletRequest request,
+                                                @RequestBody Map<String, Object> categoryMap) {
         int userId = (Integer) request.getAttribute("userId");
         String title = (String) categoryMap.get("title");
         String description = (String) categoryMap.get("description");
@@ -35,9 +37,21 @@ public class CategoryController {
     }
 
     @GetMapping("/{categoryId}")
-    public ResponseEntity<Category> getCategoryById(HttpServletRequest request, @PathVariable("categoryId") Integer categoryId) {
+    public ResponseEntity<Category> getCategoryById(HttpServletRequest request,
+                                                    @PathVariable("categoryId") Integer categoryId) {
         int userId = (Integer) request.getAttribute("userId");
         Category category = categoryService.fetchCategoryById(userId, categoryId);
         return new ResponseEntity<>(category, HttpStatus.OK);
+    }
+
+    @PatchMapping("/{categoryId}")
+    public ResponseEntity<Map<String, Boolean>> updateCategory(HttpServletRequest request,
+                                                               @PathVariable("categoryId") Integer categoryId,
+                                                               @RequestBody Category category) {
+        int userId = (Integer) request.getAttribute("userId");
+        categoryService.updateCategory(userId, categoryId, category);
+        Map<String, Boolean> map = new HashMap<>();
+        map.put("success", true);
+        return new ResponseEntity<>(map, HttpStatus.OK);
     }
 }
