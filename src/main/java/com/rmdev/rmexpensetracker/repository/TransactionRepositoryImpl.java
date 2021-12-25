@@ -75,7 +75,10 @@ public class TransactionRepositoryImpl implements TransactionRepository {
 
     @Override
     public void removeById(Integer userId, Integer categoryId, Integer transactionId) throws RmResourceNotFoundException {
-
+        int count = jdbcTemplate.update(SQL_DELETE, new Object[]{userId, categoryId, transactionId});
+        if (count == 0) {
+            throw new RmResourceNotFoundException("Transaction not found");
+        }
     }
 
     private RowMapper<Transaction> transactionRowMapper = ((rs, rowNum) -> {
