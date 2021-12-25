@@ -27,8 +27,12 @@ public class TransactionRepositoryImpl implements TransactionRepository {
     JdbcTemplate jdbcTemplate;
 
     @Override
-    public List<Transaction> findAll(Integer userId, Integer categoryId) {
-        return null;
+    public List<Transaction> findAll(Integer userId, Integer categoryId) throws RmResourceNotFoundException {
+        try {
+            return jdbcTemplate.query(SQL_FIND_ALL, new Object[]{userId, categoryId}, transactionRowMapper);
+        } catch (Exception e) {
+            throw new RmResourceNotFoundException("Transaction not found");
+        }
     }
 
     @Override
