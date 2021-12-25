@@ -64,8 +64,13 @@ public class TransactionRepositoryImpl implements TransactionRepository {
     }
 
     @Override
-    public void update(Integer userId, Integer categoryId, Integer transactionId, Double amount, String note, Long transactionDate) throws RmBadRequestException {
-
+    public void update(Integer userId, Integer categoryId, Integer transactionId, Transaction transaction) throws RmBadRequestException {
+        try {
+            jdbcTemplate.update(SQL_UPDATE, new Object[]{transaction.getAmount(), transaction.getNote(), transaction.getTransactionDate(),
+                    userId, categoryId, transactionId});
+        } catch (Exception e) {
+            throw new RmBadRequestException("Invalid Request");
+        }
     }
 
     @Override

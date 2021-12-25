@@ -35,7 +35,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public void updateTransaction(Integer userId, Integer categoryId, Integer transactionId, Transaction transaction) throws RmBadRequestException {
-
+        transactionRepository.update(userId, categoryId, transactionId, transaction);
     }
 
     @Override
